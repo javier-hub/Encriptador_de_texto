@@ -3,6 +3,8 @@ const mensaje = document.querySelector(".mensaje");
 const muneco = document.querySelector(".muneco");
 const copiar = document.querySelector(".btn-copiar");
 const aviso = document.querySelector(".text-aviso");
+const requisitos = document.querySelector(".requisitos");
+const regex = /^[a-zñ\s\¿\?\¡\!\,\.]+$/;
 
 /*
 La letra "e" es convertida para "enter"
@@ -13,13 +15,15 @@ La letra "u" es convertida para "ufat"
 */
 
 function btnEncriptar() {
-  const textoEncriptado = encriptar(textArea.value);
-  mensaje.value = textoEncriptado;
-  textArea.value = "";
-  muneco.style.visibility = "hidden";
-  aviso.style.visibility = "hidden";
-  mensaje.style.visibility = "visible";
-  copiar.style.visibility = "visible";
+  if (regex.test(textArea.value)) {
+    const textoEncriptado = encriptar(textArea.value);
+    mensaje.value = textoEncriptado;
+    textArea.value = "";
+    muneco.style.visibility = "hidden";
+    aviso.style.visibility = "hidden";
+    mensaje.style.visibility = "visible";
+    copiar.style.visibility = "visible";
+  }
 }
 
 function encriptar(stringEncriptada) {
@@ -46,13 +50,15 @@ function encriptar(stringEncriptada) {
 }
 
 function btnDesencriptar() {
-  const textoEncriptado = desencriptar(textArea.value);
-  mensaje.value = textoEncriptado;
-  textArea.value = "";
-  muneco.style.visibility = "hidden";
-  aviso.style.visibility = "hidden";
-  mensaje.style.visibility = "visible";
-  copiar.style.visibility = "visible";
+  if (regex.test(textArea.value)) {
+    const textoEncriptado = desencriptar(textArea.value);
+    mensaje.value = textoEncriptado;
+    textArea.value = "";
+    muneco.style.visibility = "hidden";
+    aviso.style.visibility = "hidden";
+    mensaje.style.visibility = "visible";
+    copiar.style.visibility = "visible";
+  }
 }
 
 function desencriptar(stringDesencriptada) {
@@ -83,8 +89,24 @@ fenterlimescimesdaidenters poberr enternfrenterntair enterstenter dentersaifimes
 */
 
 function btnCopiar() {
+  navigator.clipboard.writeText(mensaje.value).then(
+    () => {
+      /* clipboard successfully set */
+    },
+    () => {
+      /* clipboard write failed */
+    }
+  );
+
   mensaje.value = "";
   textArea.value = "";
+
+  textArea.focus();
+
+  navigator.clipboard.readText().then(function (data) {
+    textArea.value = data;
+  });
+
   muneco.style.visibility = "visible";
   aviso.style.visibility = "visible";
   mensaje.style.visibility = "hidden";
